@@ -1,0 +1,71 @@
+<main>
+  <div *ngIf="!selectedGame" class="games-grid">
+    <div
+      *ngFor="let game of games"
+      class="game-card"
+      (click)="navigateToGame(game.id)"
+    >
+      <!--<img [src]="game.image" [alt]="game.title" class="game-image" />-->
+      <h3>Titre : "{{ game.title }}"</h3>
+      <p>{{ game.description }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="selectedGame" class="game-detail">
+    <div class="game-info">
+      <h1>{{ selectedGame.title }}</h1>
+      <p class="description">{{ selectedGame.description }}</p>
+      <button (click)="navigateToGames()" class="btn btn-primary">
+        Retour aux jeux
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="selectedGame?.id === '1'">
+    <div id="canvas_div">
+      <!-- Le script p5.js est maintenant chargé dynamiquement via ScriptLoaderService -->
+    </div>
+  </div>
+
+  <div *ngIf="selectedGame?.id === '2'" class="game-detail">
+    <h2>Il faut que vous trouviez le nombre {{ targetNumber }}</h2>
+    <h3 class="description">Il reste {{ timer }} secondes...</h3>
+    <div class="game-board">
+      <div
+        *ngFor="let caseItem of emptyCases; let i = index"
+        class="case"
+        (click)="removeItemFromCase($event, i)"
+      >
+        <div *ngIf="caseItem" class="item">{{ caseItem }}</div>
+      </div>
+    </div>
+
+    <!-- Afficher les nombres et les opérations -->
+    <div class="game-controls">
+      <div class="controls">
+        <div
+          class="control-item"
+          *ngFor="let num of numbers"
+          (mousedown)="startDrag($event, num)"
+        >
+          {{ num }}
+        </div>
+        <div
+          class="control-item"
+          *ngFor="let op of operations"
+          (mousedown)="startDrag($event, op)"
+        >
+          {{ op }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Timer et règles -->
+    <div class="game-footer">
+      <button *ngIf="gameInProgress" (click)="checkAnswer()">
+        Vérifier la réponse
+      </button>
+      <button *ngIf="gameInProgress" (click)="showSolution()">Solution</button>
+    </div>
+  </div>
+</main>

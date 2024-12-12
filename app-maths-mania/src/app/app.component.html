@@ -1,0 +1,61 @@
+<main class="d-flex flex-column min-vh-100">
+  <nav class="ms-5 me-5 p-2 mt-4 navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" routerLink="">Accueil</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            routerLink="lessons"
+            id="navbarDropdownMenuLink"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Cours
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" routerLink="lessons/CM2">Niveau CM2</a>
+            <a class="dropdown-item" routerLink="lessons/6E">Niveau 6e</a>
+            <a class="dropdown-item" routerLink="lessons/5E">Niveau 5e</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="exercises">Exercices</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="games">Jeux</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="help">Aide</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Contenu principal -->
+
+  <!-- Contenu dynamique -->
+  <router-outlet></router-outlet>
+
+  <!-- Barre de navigation inférieure -->
+  <nav class="p-2 navbar navbar-expand-lg navbar-dark bg-dark mt-auto">
+    <a class="navbar-brand" href="https://angular.dev/">
+      <i class="fa-brands fa-angular"></i>
+    </a>
+  </nav>
+</main>
