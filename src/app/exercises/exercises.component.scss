@@ -1,0 +1,59 @@
+.calculation {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.text-success {
+  color: green;
+}
+
+.text-danger {
+  color: red;
+}
+
+.comparison-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.number-display {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.relation-input {
+  width: 80px;
+}
+
+.relation-select {
+  font-size: 0.9rem;
+}
+
+.fraction {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.numerator {
+  margin-bottom: -5px;
+}
+
+.denominator {
+  margin-top: -5px;
+}
+
+.divider {
+  display: none; /* Le "/" est implicite grâce à la mise en forme */
+}
+
+.number-display {
+  font-size: 1.5rem;
+  font-weight: bold;
+}

@@ -1,5 +1,257 @@
-<p>exercises works!</p>
-<p>
-  TODO, il faut voir les deux exo, un qui génère des calculs avec input simple
-  le deuxième un quizz à questions aléatoire
-</p>
+<main class="mt-3 ms-5 me-5">
+  @if (this.type == 1) {
+  <h2 class="text-center">Exercice de calcul sur les nombres entiers</h2>
+
+  <!-- Options de difficulté et type d'opération -->
+  <mat-card class="m-auto w-100">
+    <mat-card-title class="p-1">Paramétrage :</mat-card-title>
+    <mat-card-content>
+      <div>
+        <p class="mb-0 pb-0">Choisir la difficulté des opérations</p>
+        <mat-checkbox [(ngModel)]="isEasy">Facile</mat-checkbox>
+        <mat-checkbox [checked]="!isEasy" (change)="isEasy = !isEasy">
+          Difficile
+        </mat-checkbox>
+      </div>
+
+      <div class="mt-1">
+        <p class="mb-0 pb-0">Choisir les types d'opérations</p>
+        <mat-checkbox [(ngModel)]="operations.addition">Addition</mat-checkbox>
+        <mat-checkbox [(ngModel)]="operations.subtraction">
+          Soustraction
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="operations.multiplication">
+          Multiplication
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="operations.division">Division</mat-checkbox>
+      </div>
+      <button
+        mat-raised-button
+        class="mt-1"
+        color="primary"
+        (click)="startExercise()"
+      >
+        Démarrer l'exercice !
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <div
+    *ngIf="feedback"
+    [ngClass]="{ 'text-success': isCorrect, 'text-danger': !isCorrect }"
+    class="mt-1 mb-1 w-100"
+  >
+    {{ feedback }}
+  </div>
+
+  <!-- Section du calcul -->
+  <div *ngIf="currentCalculation">
+    <mat-card class="m-auto w-100">
+      <mat-card-title class="p-1">Résolvez le calcul suivant :</mat-card-title>
+      <mat-card-content>
+        <p class="calculation">{{ currentCalculation.question }}</p>
+        <mat-form-field>
+          <mat-label>Votre réponse</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="userAnswer"
+            [disabled]="isCorrect"
+          />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          class="ms-1"
+          (click)="checkAnswer()"
+        >
+          Valider
+        </button>
+
+        <div *ngIf="isCorrect" class="mt-1">
+          <button
+            mat-raised-button
+            color="accent"
+            class="m-1"
+            (click)="startExercise()"
+          >
+            Encore un calcul !
+          </button>
+          <button mat-raised-button color="warn" class="m-1" (click)="reset()">
+            Terminer
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  } @else if (this.type == 2) {
+  <h2 class="text-center">
+    Comparaison de nombres entiers, décimaux, fractions
+  </h2>
+
+  <mat-card class="m-auto w-100">
+    <mat-card-title class="p-1">Paramétrage :</mat-card-title>
+    <mat-card-content>
+      <div>
+        <p class="mb-0 pb-0">Choisir la difficulté des comparaisons</p>
+        <mat-checkbox [(ngModel)]="isEasy">Facile</mat-checkbox>
+        <mat-checkbox [checked]="!isEasy" (change)="isEasy = !isEasy">
+          Difficile
+        </mat-checkbox>
+      </div>
+
+      <button
+        mat-raised-button
+        class="mt-1"
+        color="primary"
+        (click)="startExercise()"
+      >
+        Démarrer l'exercice !
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <div
+    *ngIf="feedback"
+    [ngClass]="{ 'text-success': isCorrect, 'text-danger': !isCorrect }"
+    class="mt-1 mb-1 w-100"
+  >
+    {{ feedback }}
+  </div>
+
+  <div *ngIf="currentComparison">
+    <mat-card class="m-auto w-100">
+      <mat-card-title class="p-1">Comparez les nombres :</mat-card-title>
+      <mat-card-content>
+        <div
+          class="d-flex align-items-center justify-content-center comparison-row"
+        >
+          <ng-container
+            *ngFor="let num of currentComparison.numbers; let i = index"
+          >
+            <span
+              class="number-display"
+              [innerHTML]="formatFraction(num.toString())"
+            ></span>
+            <ng-container *ngIf="i < currentComparison.numbers.length - 1">
+              <mat-form-field appearance="fill" class="relation-input mx-2">
+                <mat-label>Relation</mat-label>
+                <mat-select
+                  [(ngModel)]="userRelations[i]"
+                  [disabled]="isCorrect"
+                  class="relation-select"
+                >
+                  <mat-option value="<">&lt;</mat-option>
+                  <mat-option value=">">&gt;</mat-option>
+                  <mat-option value="=">=</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+          </ng-container>
+        </div>
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="mt-2"
+          (click)="checkAnswer2()"
+        >
+          Valider
+        </button>
+
+        <div *ngIf="isCorrect" class="mt-1">
+          <button
+            mat-raised-button
+            color="accent"
+            class="m-1"
+            (click)="startExercise()"
+          >
+            Encore une comparaison !
+          </button>
+          <button mat-raised-button color="warn" class="m-1" (click)="reset()">
+            Terminer
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  } @else {
+  <h2 class="text-center">Exercice : Décomposition d'un nombre</h2>
+
+  <mat-card class="m-auto w-100">
+    <mat-card-title class="p-1">Consignes</mat-card-title>
+    <mat-card-content>
+      <p>
+        Décomposez le nombre en plusieurs parties (par exemple, "345 = 300 + 40
+        + 5" ou "0.6 = (6x0.1)").
+      </p>
+      <button mat-raised-button color="primary" (click)="startExercise()">
+        Démarrer l'exercice !
+      </button>
+    </mat-card-content>
+  </mat-card>
+  <div
+    *ngIf="feedback"
+    [ngClass]="{ 'text-success': isCorrect, 'text-danger': !isCorrect }"
+    class="mt-2"
+  >
+    {{ feedback }}
+  </div>
+
+  <div *ngIf="currentNumber !== null" class="mt-3">
+    <mat-card class="m-auto w-100">
+      <mat-card-title class="p-1">
+        Décomposez le nombre suivant :
+      </mat-card-title>
+      <mat-card-content>
+        <div class="d-flex align-items-center">
+          <span class="number-display me-2">{{ currentNumber }}</span>
+          <span class="me-2">=</span>
+          <div class="d-flex flex-wrap">
+            <mat-form-field class="mx-1 w-100">
+              <input
+                matInput
+                type="text"
+                [(ngModel)]="userAnswerDecomposition"
+                [disabled]="isCorrect"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="mt-2">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="checkDecomposition()"
+            [disabled]="isCorrect"
+          >
+            Valider
+          </button>
+          <button
+            mat-raised-button
+            color="warn"
+            class="ms-2"
+            (click)="clearInput()"
+          >
+            Nettoyer
+          </button>
+        </div>
+
+        <div *ngIf="isCorrect" class="mt-1">
+          <button
+            mat-raised-button
+            color="accent"
+            class="m-1"
+            (click)="startExercise()"
+          >
+            Encore une décomposition !
+          </button>
+          <button mat-raised-button color="warn" class="m-1" (click)="reset()">
+            Terminer
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  }
+</main>
