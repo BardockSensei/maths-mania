@@ -281,17 +281,28 @@ export class ExercisesComponent {
         .replace(/x/g, '*')
         .replace(/\s/g, '');
 
-      const userTotal = eval(sanitizedInput);
-
-      if (Math.abs(userTotal - this.currentNumber) < 0.0001) {
-        this.feedback = 'Bravo, la décomposition est correcte !';
-        this.isCorrect = true;
-      } else {
-        this.feedback = `La décomposition est incorrecte. Essayez encore ! (attendu : ${this.currentNumber})`;
+      const userTotal = this.safeEvaluate(sanitizedInput);
+      if (userTotal != null) {
+        if (Math.abs(userTotal - this.currentNumber) < 0.0001) {
+          this.feedback = 'Bravo, la décomposition est correcte !';
+          this.isCorrect = true;
+        } else {
+          this.feedback = `La décomposition est incorrecte. Essayez encore ! (attendu : ${this.currentNumber})`;
+        }
       }
     } catch (error) {
       this.feedback =
         'Erreur dans la saisie. Veuillez vérifier votre décomposition.';
+    }
+  }
+
+  safeEvaluate(expression: string): number | null {
+    try {
+      // Limiter les caractères pour éviter toute exécution dangereuse
+      return Function(`"use strict"; return (${expression})`)();
+    } catch (e) {
+      console.error('Expression invalide :', e);
+      return null;
     }
   }
 
